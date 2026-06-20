@@ -34,12 +34,13 @@
           @click="publish"
           class="h-12 flex items-center space-x-2 px-4 border-r text-xs font-medium bg-white text-slate-700"
         >
-          <span> Publish </span>
-          <icon name="ph:paper-plane-tilt-bold" class="h-4 w-4" />
+          <span>{{ copied ? "Copied!" : "Publish" }}</span>
+          <icon :name="copied ? 'ph:check-bold' : 'ph:paper-plane-tilt-bold'" class="h-4 w-4" />
         </button>
         <a
           href="https://github.com/fayazara/onelink"
           target="_blank"
+          rel="noopener noreferrer"
           class="h-12 flex items-center space-x-2 px-4 border-r text-xs font-medium bg-white text-slate-700"
         >
           <span> Github </span>
@@ -51,6 +52,7 @@
     <a
       href="https://twitter.com/fayazara"
       target="_blank"
+      rel="noopener noreferrer"
       class="absolute bottom-0 right-0 bg-white rounded-tl-lg shadow px-4 py-1 font-medium text-sm text-gray-500"
     >
       Made by Fayaz
@@ -120,10 +122,13 @@ const prefillDemoData = () => {
   };
 };
 
+const copied = ref(false);
+
 const publish = () => {
   const url = `${window.location.origin}/1?data=${encodeData(data.value)}`;
   navigator.clipboard.writeText(url).then(() => {
-    alert("Link copied to clipboard");
+    copied.value = true;
+    setTimeout(() => (copied.value = false), 2000);
   });
 };
 </script>
